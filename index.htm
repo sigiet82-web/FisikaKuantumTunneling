@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulasi Sumur dan Penghalang Potensial</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+<h1>Sumur dan penghalang potensial</h1>
+<p class="lead">Simulasi satu dimensi untuk partikel nonrelativistik dengan energi potensial persegi. Semua angka dihitung langsung dari persamaan Schrödinger bebas waktu, bukan dari kurva tempelan.</p>
+<div class="tabs" role="tablist">
+<button role="tab" id="tb1" aria-selected="true">Penghalang dan terowongan</button>
+<button role="tab" id="tb2" aria-selected="false">Sumur berhingga</button>
+</div>
+
+<section class="sec on" id="s1">
+<div class="layout">
+<div class="card">
+<h2>Atur partikel dan penghalang</h2>
+<div class="chips">
+<button data-p="stm">Celah ala STM</button><button data-p="thick">Penghalang tebal</button><button data-p="thin">Penghalang tipis</button><button data-p="proton">Proton</button>
+</div>
+<div class="ctl"><label for="m1">Partikel</label><select id="m1"><option value="e">Elektron</option><option value="p">Proton</option><option value="a">Partikel alfa</option></select></div>
+<div class="ctl"><label for="E1">Energi total E <output id="oE1"></output></label><input type="range" id="E1" min="0.05" max="4.95" step="0.05" value="1"></div>
+<div class="ctl"><label for="U1">Tinggi penghalang U <output id="oU1"></output></label><input type="range" id="U1" min="0.5" max="10" step="0.1" value="5"></div>
+<div class="ctl"><label for="L1">Lebar penghalang L <output id="oL1"></output></label><input type="range" id="L1" min="0.05" max="2" step="0.05" value="0.5"></div>
+<label style="font-size:14px;display:flex;gap:8px;align-items:center"><input type="checkbox" id="lg"> Skala logaritmik untuk |ψ|²</label>
+<p class="note">E selalu dijaga lebih kecil dari U, sesuai kasus terowongan: secara klasik partikel pasti dipantulkan.</p>
+</div>
+<div>
+<div class="card">
+<canvas id="c1" height="270" aria-label="Diagram energi potensial dan bagian riil fungsi gelombang"></canvas>
+<p class="cap">Garis putus-putus: energi E. Kurva: bagian riil ψ(x) digambar di sekitar garis E, dengan amplitudo gelombang datang = 1. Daerah I (x &lt; 0), II (0 ≤ x ≤ L), III (x &gt; L).</p>
+<canvas id="c2" height="170" aria-label="Rapat probabilitas"></canvas>
+<p class="cap">|ψ(x)|²: sinusoidal di daerah I (gelombang datang + pantul), meluruh eksponensial di II, sinusoidal beramplitudo kecil di III.</p>
+<canvas id="c3" height="190" aria-label="Probabilitas transmisi terhadap lebar"></canvas>
+<p class="cap">log₁₀ T terhadap L untuk E, U, dan partikel yang sedang dipilih. Garis penuh: T eksak. Garis putus-putus: e<sup>−2CL</sup>.</p>
+<dl id="r1"></dl>
+<p class="note">Catatan akurasi: e<sup>−2CL</sup> adalah faktor eksponensial yang menentukan orde besar T. Rumus eksaknya T = 1 / [1 + U² sinh²(CL) / (4E(U−E))]; untuk CL ≫ 1 ia menjadi T ≈ [16E(U−E)/U²] e<sup>−2CL</sup>, jadi ada faktor di depan eksponensial. Rasio keduanya ditampilkan di atas.</p>
+</div>
+</div>
+</div>
+<details><summary>Hubungan dengan penerapan nyata</summary>
+<p class="note">Mikroskop terowongan payaran (STM) memakai celah sempit sebagai penghalang, sehingga arus peka terhadap jarak. Peluruhan alfa dan fusi di inti Matahari melibatkan penetrasi penghalang Coulomb. Simulasi ini memakai penghalang persegi satu dimensi, jadi hanya menggambarkan prinsipnya; angka pada sistem nyata memerlukan bentuk penghalang yang sebenarnya.</p></details>
+</section>
+
+<section class="sec" id="s2">
+<div class="layout">
+<div class="card">
+<h2>Atur sumur</h2>
+<div class="ctl"><label for="m2">Partikel</label><select id="m2"><option value="e">Elektron</option><option value="p">Proton</option><option value="a">Partikel alfa</option></select></div>
+<div class="ctl"><label for="a2">Lebar sumur a <output id="oa2"></output></label><input type="range" id="a2" min="0.2" max="3" step="0.05" value="1"></div>
+<div class="ctl"><label for="U2">Kedalaman U₀ <output id="oU2"></output></label><input type="range" id="U2" min="0.5" max="50" step="0.5" value="5"></div>
+<div class="ctl"><label for="n2">Keadaan terikat n <output id="on2"></output></label><input type="range" id="n2" min="1" max="1" step="1" value="1"></div>
+<p class="note">Dasar sumur berenergi 0 dan dinding setinggi U₀. Keadaan terikat adalah solusi dengan 0 &lt; E &lt; U₀.</p>
+</div>
+<div class="card">
+<canvas id="c4" height="270" aria-label="Sumur potensial, tingkat energi, dan fungsi gelombang"></canvas>
+<p class="cap">Garis tipis: semua tingkat energi terikat. Kurva: ψₙ(x) pada tingkat yang dipilih. Fungsi gelombang tidak berhenti di dinding, tetapi menembus ke daerah terlarang secara eksponensial.</p>
+<canvas id="c5" height="170" aria-label="Rapat probabilitas di sumur"></canvas>
+<p class="cap">|ψₙ|² ternormalisasi. Bagian berwarna ungu adalah peluang menemukan partikel di luar sumur.</p>
+<dl id="r2"></dl>
+<p class="note">Syarat energi: genap k tan(ka/2) = κ, ganjil −k cot(ka/2) = κ, dengan k² + κ² = 2mU₀/ħ². Energi sumur berhingga selalu lebih rendah daripada sumur tak hingga selebar sama, karena gelombang “muat” lebih lebar.</p>
+</div>
+</div>
+</section>
+</div>
+<script src="js/physics.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
